@@ -1,2 +1,2 @@
-obj/*
-bin/*
+obj/*.o
+bin/run_md

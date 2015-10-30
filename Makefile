@@ -1,6 +1,6 @@
 # Project subdirectories
 SRCDIR = src
-INCDIR = include
+INCDIR = inc
 OBJDIR = obj
 BINDIR = bin
 

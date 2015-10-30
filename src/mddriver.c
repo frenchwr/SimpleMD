@@ -24,7 +24,7 @@ void free_atoms(Atoms *);
 void print_atoms(Atoms *);
 void print_xyz(FILE *,Atoms *, int);
 void initialize_positions(Atoms *, float);
-void initialize_velocities(Atoms *);
+void initialize_velocities(Atoms *, float);
 
 // main function
 int main(int argc, char ** argv)
@@ -84,13 +84,29 @@ void driver(int argc, char ** argv)
    float sig6 = powf(sig,6.0);
    float sig12 = powf(sig,12.0);
    float rcut2 = rcut * rcut;
+
+   // parameters for long range energy correction
+   float rcut3 = powf(rcut,3.0);
+   float rcut9 = powf(rcut,9.0);
+   float kb = 0.0000380660; // Bolztmann's Constant (aJ/molecule/K)
+   eps *= kb;
+   float pi = 2.0 * asin(1.0);
+   float ulongpre = float_N * 8.0 * eps * pi * density;
+   float ulong = ulongpre * ( sig12 / ( 9.0 * rcut9 ) - sig6 / ( 6.0 * rcut3 ) );
+   float vlongpre = 96.0 * eps * pi * density;
+   float vlong = -1.0 * vlongpre * ( sig12 / ( 9.0 * rcut9 ) - sig6 / ( 6.0 * rcut3 ) ); 
+
+   // temperature factor for velocity scaling
+   float xmass = MW * 100.0 / 6.0220;
+   float xmassi = 1.0 / xmass;
+   float tfac = 3.0 * (float)N * kb * T * xmassi;
    
 
    // initialization of atomic positions
    initialize_positions(&atoms,side);
 
    // initialization of atomic velocities
-   initialize_velocities(&atoms);   
+   initialize_velocities(&atoms,tfac);   
 
    // main loop:
    //           (1) solve for energy/force
@@ -273,7 +289,7 @@ void initialize_positions(Atoms * myatoms, float box_length)
    }
 }
 
-void initialize_velocities(Atoms * myatoms)
+void initialize_velocities(Atoms * myatoms, float tempfac)
 {
 
    // generate random seed based on the current time
@@ -303,18 +319,18 @@ void initialize_velocities(Atoms * myatoms)
    }
 
    // scale velocities to set point temperature
+   float sumvsq = 0.0;
+   for (i=0; i<natoms; i++) {
+      sumvsq += myatoms->vx[i] * myatoms->vx[i] +
+                myatoms->vy[i] * myatoms->vy[i] +
+                myatoms->vz[i] * myatoms->vz[i];
+   }
+   float scaling = sqrt(tempfac/sumvsq);
+   for (i=0; i<natoms; i++) {
+      myatoms->vx[i] *= scaling;
+      myatoms->vy[i] *= scaling;
+      myatoms->vz[i] *= scaling;
+   }
    
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

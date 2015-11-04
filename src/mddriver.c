@@ -3,21 +3,35 @@
 #include <string.h> 
 #include <math.h>
 #include "atoms.h"
+#include "cl_parse.h"
 
 typedef struct {
-   int N; // number of atoms in simulation
-   int n_timesteps; // number of simulation timesteps
-   int xyz_freq; // output frequency (in timesteps) of atomic coordinates
-   int thermo_freq; // output frequency of thermodynamic quantities
-} args;
+   float sig; // collision diameter
+   float sig6; // sig^6
+   float sig12; // sig^12
+   float eps; // well depth (K)
+   float rcut; // interaction cutoff
+   float rcut2; // rcut^2
+   float rcut3; // rcut^3
+   float rcut9; // rcut^9
+} lj_params;
 
-// blah blah blah just
-// an arbitrary change to the file
+typedef struct {
+   float dt; // timestep
+   float dt2;
+   float dt2h;
+   float pi;
+   float kb; // Bolztmann's Constant (aJ/molecule/K)
+   float MW; // molecular weight (grams/mole)
+   float float_N;
+   float Vol;
+   float side;
+   float sideh;
+   float density;
+} misc_params;
 
 // forward declarations
 void driver(int,char **);
-args parse_command_line(int,char **);
-int check_arg_sane( char **, int, int );
 void allocate_atoms(Atoms *,int);
 float * safe_malloc_float(int);
 void free_atoms(Atoms *);
@@ -25,6 +39,7 @@ void print_atoms(Atoms *);
 void print_xyz(FILE *,Atoms *, int);
 void initialize_positions(Atoms *, float);
 void initialize_velocities(Atoms *, float);
+void calc_energy();
 
 // main function
 int main(int argc, char ** argv)
@@ -47,7 +62,7 @@ void driver(int argc, char ** argv)
    //                (3) xyz output frequency
    //                (4) thermo output frequency
    args cl_args = parse_command_line(argc,argv);
-   int N = cl_args.N;
+   int N = cl_args.N; // not sure why I'm doing this...just use cl_args
    Atoms atoms; 
    allocate_atoms(&atoms,N);
 
@@ -64,46 +79,46 @@ void driver(int argc, char ** argv)
    float Vn = 113.23; // specific volume (Ang^3/molecule)
 
    // LJ Potential Parameters
-   float sig = 3.884; // collision diameter
-   float eps = 137.0; // well depth (K)
-   float MW = 16.042; // molecular weight (grams/mole)
-   float rcut = 15.0; // interaction cutoff
+   lj_params lj;
+   lj.sig = 3.884; // collision diameter
+   lj.sig6 = powf(lj.sig,6.0);
+   lj.sig12 = powf(lj.sig,12.0);
+   lj.eps = 137.0; // well depth (K)
+   lj.rcut = 15.0; // interaction cutoff
+   lj.rcut2 = lj.rcut * lj.rcut;
+   lj.rcut3 = powf(lj.rcut,3.0);
+   lj.rcut9 = powf(lj.rcut,9.0);
 
    // Other parameters
-   float dt = 2.0; // timestep
-
-   // Compute other parameters that get reused
-   float dt2 = dt * dt;
-   float dt2h = 0.5 * dt2;
-   float float_N = (float)N;
-   float Vol = float_N * Vn;
-   float side = powf(Vol,1.0/3.0);
-   printf("side: %10.4f\n",side);
-   float sideh = 0.5 * side;
-   float density = 1.0 / Vn;
-   float sig6 = powf(sig,6.0);
-   float sig12 = powf(sig,12.0);
-   float rcut2 = rcut * rcut;
+   misc_params mp;
+   mp.dt = 2.0; // timestep
+   mp.dt2 = mp.dt * mp.dt;
+   mp.dt2h = 0.5 * mp.dt2;
+   mp.float_N = (float)N;
+   mp.Vol = mp.float_N * Vn;
+   mp.side = powf(mp.Vol,1.0/3.0);
+   mp.sideh = 0.5 * mp.side;
+   mp.density = 1.0 / Vn;
+   mp.pi = 2.0 * asin(1.0);
+   mp.MW = 16.042; // molecular weight (grams/mole)
+   mp.kb = 0.00001380660; // Bolztmann's Constant (aJ/molecule/K)
+   lj.eps *= mp.kb;
 
    // parameters for long range energy correction
-   float rcut3 = powf(rcut,3.0);
-   float rcut9 = powf(rcut,9.0);
-   float kb = 0.0000380660; // Bolztmann's Constant (aJ/molecule/K)
-   eps *= kb;
-   float pi = 2.0 * asin(1.0);
-   float ulongpre = float_N * 8.0 * eps * pi * density;
-   float ulong = ulongpre * ( sig12 / ( 9.0 * rcut9 ) - sig6 / ( 6.0 * rcut3 ) );
-   float vlongpre = 96.0 * eps * pi * density;
-   float vlong = -1.0 * vlongpre * ( sig12 / ( 9.0 * rcut9 ) - sig6 / ( 6.0 * rcut3 ) ); 
+   float ulongpre = mp.float_N * 8.0 * lj.eps * mp.pi * mp.density;
+   float ulong = ulongpre * ( lj.sig12 / ( 9.0 * lj.rcut9 ) - lj.sig6 / ( 6.0 * lj.rcut3 ) );
+   float vlongpre = 96.0 * lj.eps * mp.pi * mp.density;
+   float vlong = -1.0 * vlongpre * ( lj.sig12 / ( 9.0 * lj.rcut9 ) - lj.sig6 / ( 6.0 * lj.rcut3 ) ); 
 
    // temperature factor for velocity scaling
-   float xmass = MW * 100.0 / 6.0220;
+   // TODO: If this not needed elsewhere then just leave
+   //       it locally in the initialize velocities function
+   float xmass = mp.MW * 100.0 / 6.0220;
    float xmassi = 1.0 / xmass;
-   float tfac = 3.0 * (float)N * kb * T * xmassi;
-   
+   float tfac = 3.0 * mp.float_N * mp.kb * T * xmassi;
 
    // initialization of atomic positions
-   initialize_positions(&atoms,side);
+   initialize_positions(&atoms,mp.side);
 
    // initialization of atomic velocities
    initialize_velocities(&atoms,tfac);   
@@ -134,82 +149,6 @@ void driver(int argc, char ** argv)
 
    if ( xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);
-}
-
-args parse_command_line(int argc,char ** argv)
-{
-
-   // defaults
-   args cl_args;
-   cl_args.N = 100;
-   cl_args.n_timesteps = 10000;
-   cl_args.xyz_freq = 100;
-   cl_args.thermo_freq = 100;
-
-   int cnt = 1;
-   while ( cnt < argc )
-   {
-
-      if ( !strcmp(argv[cnt],"-N") ) 
-         cl_args.N = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"-ts") ) 
-         cl_args.n_timesteps = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"-xyz") ) 
-         cl_args.xyz_freq = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"-o") ) 
-         cl_args.thermo_freq = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"--help") || !strcmp(argv[cnt],"-h") ) {
-         printf("Usage: ./run_md [-N <n_particles>] [-ts <n_timesteps>] [-xyz <xyz_file_output_frequency>] [-o <thermo_output_frequency>]\n");
-         printf("Defaults:\nn_particles: 100\nn_timesteps: 10000\nxyz_file_output_fequency: 100\nthermo_output_frequency: 100\n");
-         exit(-1);
-      }
-      else {
-         printf("\n***Error: Unrecognized CL option: %s\n\n",argv[cnt]);
-         printf("Usage: ./run_md [-N <n_particles>] [-ts <n_timesteps>] [-xyz <xyz_file_output_frequency>] [-o <thermo_output_frequency>]\n");
-         printf("Defaults:\nn_particles: 100\nn_timesteps: 10000\nxyz_file_output_fequency: 100\nthermo_output_frequency: 100\n");
-         exit(-1);
-      }
-      cnt++;
-
-   }
-
-   printf("=======Command line arguments=======\n");
-   printf("N_atoms: %d\n",cl_args.N);
-   printf("n_timesteps: %d\n",cl_args.n_timesteps);
-   printf("xyz_file_output_frequency: %d\n",cl_args.xyz_freq);
-   printf("thermo_output_frequency: %d\n",cl_args.thermo_freq);
-   printf("====================================\n");
-
-   return cl_args;
-
-}
-
-int check_arg_sane( char ** arg_strs, int arg_i, int n_args )
-{
-
-   if ( n_args <= arg_i ) {
-      printf("Expected integer after flag: %s\n",arg_strs[arg_i-1]);
-      exit(-1);
-   }
-
-   char * arg_str = arg_strs[arg_i];
-   int length = strlen(arg_str);
-   int i;
-   for (i=0; i<length; i++) {
-      if ( !isdigit(arg_str[i]) ) {
-         printf("arg: %s should be a non-negative integer\n",arg_str);
-         exit(-1);           
-      }
-   }
-
-   int result = atoi(arg_str);
-   if ( result < 1 ) {
-      printf("arg: %s should be greater than zero!\n",arg_str);
-      exit(-1);
-   }
-
-   return result;
-
 }
 
 void allocate_atoms( Atoms * myatoms, int n_atoms )
@@ -334,3 +273,7 @@ void initialize_velocities(Atoms * myatoms, float tempfac)
    
 }
 
+void calc_energy()
+{
+
+}

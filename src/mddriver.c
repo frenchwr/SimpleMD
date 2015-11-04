@@ -61,10 +61,11 @@ void driver(int argc, char ** argv)
    //                (2) Number of timesteps
    //                (3) xyz output frequency
    //                (4) thermo output frequency
-   args cl_args = parse_command_line(argc,argv);
-   int N = cl_args.N; // not sure why I'm doing this...just use cl_args
+   args cl = parse_command_line(argc,argv);
+
+   // Allocate space to store atomic positions and velocities
    Atoms atoms; 
-   allocate_atoms(&atoms,N);
+   allocate_atoms(&atoms,cl.N);
 
    // initialization of parameters
    // Units are as follows:
@@ -94,7 +95,7 @@ void driver(int argc, char ** argv)
    mp.dt = 2.0; // timestep
    mp.dt2 = mp.dt * mp.dt;
    mp.dt2h = 0.5 * mp.dt2;
-   mp.float_N = (float)N;
+   mp.float_N = (float)cl.N;
    mp.Vol = mp.float_N * Vn;
    mp.side = powf(mp.Vol,1.0/3.0);
    mp.sideh = 0.5 * mp.side;
@@ -126,20 +127,17 @@ void driver(int argc, char ** argv)
    // main loop:
    //           (1) solve for energy/force
    //           (2) update particle positions/velocities
-   int n_timesteps = cl_args.n_timesteps;
-   int xyz_freq = cl_args.xyz_freq;
-   int thermo_freq = cl_args.thermo_freq;
 
    FILE *fp_out;
-   if ( xyz_freq != 0 ) fp_out = fopen("traj.xyz","w");
+   if ( cl.xyz_freq != 0 ) fp_out = fopen("traj.xyz","w");
    
    int i;
-   for (i=0; i<n_timesteps; i++)
+   for (i=0; i < cl.n_timesteps; i++)
    {
-      if ( i%xyz_freq == 0 )
-         print_xyz(fp_out,&atoms,N);
+      if ( i % cl.xyz_freq == 0 )
+         print_xyz(fp_out,&atoms,cl.N);
 
-      if ( i%thermo_freq == 0 ) {
+      if ( i % cl.thermo_freq == 0 ) {
          // calculate properties
          // output properties
       }
@@ -147,7 +145,7 @@ void driver(int argc, char ** argv)
    }
 
 
-   if ( xyz_freq != 0 ) fclose(fp_out);
+   if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);
 }
 

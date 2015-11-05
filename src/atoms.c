@@ -1,6 +1,6 @@
+#include "atoms.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "atoms.h"
 
 void allocate_atoms( Atoms * myatoms, int n_atoms )
 {

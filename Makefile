@@ -6,7 +6,7 @@ BINDIR = bin
 
 # Compiler rules
 CC=gcc
-CFLAGS=-I$(INCDIR) -lm
+CFLAGS=-I$(INCDIR) -lm -Wall
 
 # Linker flags and libs
 LDFLAGS=-lm

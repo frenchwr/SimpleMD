@@ -1,7 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> 
 #include "cl_parse.h"
+#include <string.h> 
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
 
 args parse_command_line(int argc,char ** argv)
 {

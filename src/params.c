@@ -1,8 +1,8 @@
+#include "params.h"
+#include <math.h>
+#include <string.h> 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> 
-#include <math.h>
-#include "params.h"
 
 void set_params(lj_params * len_jo, misc_params * m_pars, int n_atoms, float vol_norm)
 {

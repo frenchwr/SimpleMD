@@ -2,6 +2,7 @@
 #include "cl_parse.h"
 #include "params.h"
 #include "initialization.h"
+#include "print_traj.h"
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
@@ -13,7 +14,6 @@
 //       - Put print_xyz into external file
 //
 void driver(int,char **);
-void print_xyz(FILE *,Atoms *, int);
 void calc_energy();
 
 // main function
@@ -94,21 +94,6 @@ void driver(int argc, char ** argv)
 
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);
-}
-
-void print_xyz(FILE * handle,Atoms * myatoms, int n_atoms)
-{
-
-   fprintf(handle,"%d\n",n_atoms);
-   fprintf(handle,"atoms\n");
-   int i;
-   for (i=0; i<n_atoms; i++) {
-      fprintf(handle,"C     %10.5f %10.5f %10.5f\n",
-              myatoms->xx[i],
-              myatoms->yy[i],
-              myatoms->zz[i] );
-   }
-
 }
 
 void calc_energy()

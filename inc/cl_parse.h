@@ -1,4 +1,7 @@
 
+#ifndef CL_PARSE_H
+#define CL_PARSE_H
+
 typedef struct {
    int N; // number of atoms in simulation
    int n_timesteps; // number of simulation timesteps
@@ -8,3 +11,5 @@ typedef struct {
 
 args parse_command_line(int,char **);
 int check_arg_sane( char **, int, int );
+
+#endif

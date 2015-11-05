@@ -1,4 +1,7 @@
 
+#ifndef PARAMS_H
+#define PARAMS_H
+
 typedef struct {
    float sig; // collision diameter
    float sig6; // sig^6
@@ -25,3 +28,5 @@ typedef struct {
 } misc_params;
 
 void set_params(lj_params *, misc_params *, int, float);
+
+#endif

@@ -1,4 +1,7 @@
 
+#ifndef ATOMS_H
+#define ATOMS_H
+
 typedef struct {
    float * xx; // array of x positions of atoms
    float * yy; // array of y positions of atoms
@@ -12,3 +15,5 @@ typedef struct {
 void allocate_atoms(Atoms *,int);
 float * safe_malloc_float(int);
 void free_atoms(Atoms *);
+
+#endif

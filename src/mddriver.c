@@ -3,6 +3,7 @@
 #include "params.h"
 #include "initialization.h"
 #include "print_traj.h"
+#include "energy_force.h"
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
@@ -40,12 +41,8 @@ void driver(int argc, char ** argv)
    misc_params mp;
    set_params( &lj, &mp, cl.N, Vn);
 
-   // parameters for long range energy correction
-   // TODO: move this to the function(s) that calculates energy and force
-   float ulongpre = mp.float_N * 8.0 * lj.eps * mp.pi * mp.density;
-   float ulong = ulongpre * ( lj.sig12 / ( 9.0 * lj.rcut9 ) - lj.sig6 / ( 6.0 * lj.rcut3 ) );
-   float vlongpre = 96.0 * lj.eps * mp.pi * mp.density;
-   float vlong = -1.0 * vlongpre * ( lj.sig12 / ( 9.0 * lj.rcut9 ) - lj.sig6 / ( 6.0 * lj.rcut3 ) ); 
+   float ulong, vlong;
+   compute_long_range_correction( &lj, &mp, &ulong, &vlong);
 
    // initialization of atomic positions
    initialize_positions( &atoms, mp.side);

@@ -8,24 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// forward declarations
-//
-// TODO:
-//       - Put print_xyz into external file
-//
-void driver(int,char **);
-void calc_energy();
-
-// main function
-int main(int argc, char ** argv)
-{
-
-   driver( argc, argv);
-
-   return 0;
-
-}
-
 // driver
 void driver(int argc, char ** argv)
 {
@@ -96,7 +78,13 @@ void driver(int argc, char ** argv)
    free_atoms(&atoms);
 }
 
-void calc_energy()
+// main function
+int main(int argc, char ** argv)
 {
 
+   driver( argc, argv);
+
+   return 0;
+
 }
+

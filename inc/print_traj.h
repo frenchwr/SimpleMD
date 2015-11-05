@@ -4,6 +4,6 @@
 #include "atoms.h"
 #include <stdio.h>
 
-void print_xyz(FILE *,Atoms *, int);
+void print_xyz( FILE *, Atoms *);
 
 #endif

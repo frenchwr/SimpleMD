@@ -61,12 +61,14 @@ void driver(int argc, char ** argv)
    for (i=0; i < cl.n_timesteps; i++)
    {
       if ( i % cl.xyz_freq == 0 )
-         print_xyz( fp_out, &atoms, cl.N);
+         print_xyz( fp_out, &atoms );
 
       if ( i % cl.thermo_freq == 0 ) {
          // calculate properties
          // output properties
       }
+
+      compute_energy_and_force(  );
 
    }
 

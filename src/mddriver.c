@@ -4,33 +4,14 @@
 #include <math.h>
 #include "atoms.h"
 #include "cl_parse.h"
-
-typedef struct {
-   float sig; // collision diameter
-   float sig6; // sig^6
-   float sig12; // sig^12
-   float eps; // well depth (K)
-   float rcut; // interaction cutoff
-   float rcut2; // rcut^2
-   float rcut3; // rcut^3
-   float rcut9; // rcut^9
-} lj_params;
-
-typedef struct {
-   float dt; // timestep
-   float dt2;
-   float dt2h;
-   float pi;
-   float kb; // Bolztmann's Constant (aJ/molecule/K)
-   float MW; // molecular weight (grams/mole)
-   float float_N;
-   float Vol;
-   float side;
-   float sideh;
-   float density;
-} misc_params;
+#include "params.h"
 
 // forward declarations
+//
+// TODO:
+//       - Put print_xyz into external file
+//       - Put initialization functions into external files
+//
 void driver(int,char **);
 void print_xyz(FILE *,Atoms *, int);
 void initialize_positions(Atoms *, float);
@@ -76,33 +57,12 @@ void driver(int argc, char ** argv)
    float T = 150.0; // temperature (K)
    float Vn = 113.23; // specific volume (Ang^3/molecule)
 
-   // LJ Potential Parameters
    lj_params lj;
-   lj.sig = 3.884; // collision diameter
-   lj.sig6 = powf(lj.sig,6.0);
-   lj.sig12 = powf(lj.sig,12.0);
-   lj.eps = 137.0; // well depth (K)
-   lj.rcut = 15.0; // interaction cutoff
-   lj.rcut2 = lj.rcut * lj.rcut;
-   lj.rcut3 = powf(lj.rcut,3.0);
-   lj.rcut9 = powf(lj.rcut,9.0);
-
-   // Other parameters
    misc_params mp;
-   mp.dt = 2.0; // timestep
-   mp.dt2 = mp.dt * mp.dt;
-   mp.dt2h = 0.5 * mp.dt2;
-   mp.float_N = (float)cl.N;
-   mp.Vol = mp.float_N * Vn;
-   mp.side = powf(mp.Vol,1.0/3.0);
-   mp.sideh = 0.5 * mp.side;
-   mp.density = 1.0 / Vn;
-   mp.pi = 2.0 * asin(1.0);
-   mp.MW = 16.042; // molecular weight (grams/mole)
-   mp.kb = 0.00001380660; // Bolztmann's Constant (aJ/molecule/K)
-   lj.eps *= mp.kb;
+   set_params( &lj, &mp, cl.N, Vn);
 
    // parameters for long range energy correction
+   // TODO: move this to the function(s) that calculates energy and force
    float ulongpre = mp.float_N * 8.0 * lj.eps * mp.pi * mp.density;
    float ulong = ulongpre * ( lj.sig12 / ( 9.0 * lj.rcut9 ) - lj.sig6 / ( 6.0 * lj.rcut3 ) );
    float vlongpre = 96.0 * lj.eps * mp.pi * mp.density;

@@ -8,3 +8,7 @@ typedef struct {
    float * vz; // array of z-component of velocity of atoms
    int N; // number of atoms
 } Atoms;
+
+void allocate_atoms(Atoms *,int);
+float * safe_malloc_float(int);
+void free_atoms(Atoms *);

@@ -32,10 +32,6 @@ typedef struct {
 
 // forward declarations
 void driver(int,char **);
-void allocate_atoms(Atoms *,int);
-float * safe_malloc_float(int);
-void free_atoms(Atoms *);
-void print_atoms(Atoms *);
 void print_xyz(FILE *,Atoms *, int);
 void initialize_positions(Atoms *, float);
 void initialize_velocities(Atoms *, float);
@@ -52,6 +48,7 @@ int main(int argc, char ** argv)
 }
 
 // driver
+// TODO: add some debug preprocessors to print debug info
 void driver(int argc, char ** argv)
 {
 
@@ -148,39 +145,6 @@ void driver(int argc, char ** argv)
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);
 }
-
-void allocate_atoms( Atoms * myatoms, int n_atoms )
-{
-   myatoms->xx = safe_malloc_float( n_atoms );
-   myatoms->yy = safe_malloc_float( n_atoms );
-   myatoms->zz = safe_malloc_float( n_atoms );
-   myatoms->vx = safe_malloc_float( n_atoms );
-   myatoms->vy = safe_malloc_float( n_atoms );
-   myatoms->vz = safe_malloc_float( n_atoms );
-   myatoms->N = n_atoms;
-}
-
-float * safe_malloc_float(int vec_size)
-{
-   float * vec;
-   vec = (float *)malloc( vec_size * sizeof(float) );
-   if ( vec == NULL ) {
-      printf("Allocation failed, exiting.\n");
-      exit(-1);
-   }
-   return vec;
-}
-
-void free_atoms( Atoms * myatoms )
-{
-   free(myatoms->xx);
-   free(myatoms->yy);
-   free(myatoms->zz);
-   free(myatoms->vx);
-   free(myatoms->vy);
-   free(myatoms->vz);
-}
-
 
 void print_xyz(FILE * handle,Atoms * myatoms, int n_atoms)
 {

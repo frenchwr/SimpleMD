@@ -32,8 +32,12 @@ void initialize_positions(Atoms * myatoms, float box_length)
    }
 }
 
-void initialize_velocities(Atoms * myatoms, float tempfac)
+void initialize_velocities(Atoms * myatoms, misc_params * m_pars, float temp)
 {
+   // temperature factor for velocity scaling
+   float xmass = m_pars->MW * 100.0 / 6.0220;
+   float xmassi = 1.0 / xmass;
+   float tempfac = 3.0 * m_pars->float_N * m_pars->kb * temp * xmassi;  
 
    // generate random seed based on the current time
    // for initializing the random number generator

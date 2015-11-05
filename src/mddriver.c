@@ -20,7 +20,7 @@ void calc_energy();
 int main(int argc, char ** argv)
 {
 
-   driver(argc,argv);
+   driver( argc, argv);
 
    return 0;
 
@@ -36,11 +36,11 @@ void driver(int argc, char ** argv)
    //                (2) Number of timesteps
    //                (3) xyz output frequency
    //                (4) thermo output frequency
-   args cl = parse_command_line(argc,argv);
+   args cl = parse_command_line( argc, argv);
 
    // Allocate space to store atomic positions and velocities
    Atoms atoms; 
-   allocate_atoms(&atoms,cl.N);
+   allocate_atoms( &atoms, cl.N);
 
    // initialization of parameters
    // Units are as follows:
@@ -65,18 +65,11 @@ void driver(int argc, char ** argv)
    float vlongpre = 96.0 * lj.eps * mp.pi * mp.density;
    float vlong = -1.0 * vlongpre * ( lj.sig12 / ( 9.0 * lj.rcut9 ) - lj.sig6 / ( 6.0 * lj.rcut3 ) ); 
 
-   // temperature factor for velocity scaling
-   // TODO: If this not needed elsewhere then just leave
-   //       it locally in the initialize velocities function
-   float xmass = mp.MW * 100.0 / 6.0220;
-   float xmassi = 1.0 / xmass;
-   float tfac = 3.0 * mp.float_N * mp.kb * T * xmassi;  
-
    // initialization of atomic positions
-   initialize_positions(&atoms,mp.side);
+   initialize_positions( &atoms, mp.side);
 
    // initialization of atomic velocities
-   initialize_velocities(&atoms,tfac);   
+   initialize_velocities( &atoms, &mp, T);   
 
    // main loop:
    //           (1) solve for energy/force
@@ -89,7 +82,7 @@ void driver(int argc, char ** argv)
    for (i=0; i < cl.n_timesteps; i++)
    {
       if ( i % cl.xyz_freq == 0 )
-         print_xyz(fp_out,&atoms,cl.N);
+         print_xyz( fp_out, &atoms, cl.N);
 
       if ( i % cl.thermo_freq == 0 ) {
          // calculate properties

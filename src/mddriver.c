@@ -68,7 +68,7 @@ void driver(int argc, char ** argv)
          // output properties
       }
 
-      compute_energy_and_force(  );
+      compute_energy_and_force( &atoms, &lj, &mp, ulong, vlong, T );
 
    }
 

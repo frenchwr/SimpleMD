@@ -1,4 +1,5 @@
 #include "params.h"
+#include "atoms.h"
 
 void compute_long_range_correction(lj_params * len_jo, misc_params * m_pars,
                                    float * energy_long, float * force_long )
@@ -15,7 +16,9 @@ void compute_long_range_correction(lj_params * len_jo, misc_params * m_pars,
 
 }
 
-void compute_energy_and_force()
+void compute_energy_and_force( Atoms * myatoms, lj_params * len_jon, 
+                               misc_params * m_pars, float energy_long, 
+                               float force_long, float temp )
 {
 
 }

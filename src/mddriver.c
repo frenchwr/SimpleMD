@@ -69,6 +69,7 @@ void driver(int argc, char ** argv)
       }
 
       compute_energy_and_force( &atoms, &lj, &mp, ulong, vlong, T );
+      //update_positions( &atoms );
 
    }
 

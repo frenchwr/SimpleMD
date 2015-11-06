@@ -1,3 +1,4 @@
+#include "energy_force.h"
 #include "params.h"
 #include "atoms.h"
 
@@ -28,11 +29,26 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jon,
    for (atomi=0; atomi < myatoms->N; atomi++)
    {
 
-      for (atomj=atomi; atomj < myatoms->N; atomj++)
+      for (atomj=atomi+1 ; atomj < myatoms->N; atomj++)
       {
+
+         float xxi = myatoms->xx[atomi] - myatoms->xx[atomj];
+         xxi = minimum_image( xxi, m_pars->side, m_pars->sideh );
+         float yyi = myatoms->yy[atomi] - myatoms->yy[atomj];
+         yyi = minimum_image( yyi, m_pars->side, m_pars->sideh );
+         float zzi = myatoms->zz[atomi] - myatoms->zz[atomj];
+         zzi = minimum_image( zzi, m_pars->side, m_pars->sideh );
 
       } 
 
    }
 
+}
+
+float minimum_image( float dist, float box_length, float half_box_length )
+{
+   float min_dist = dist;
+   if (dist > half_box_length ) min_dist = dist - box_length; 
+   if (dist < -half_box_length ) min_dist = dist + box_length;
+   return min_dist; 
 }

@@ -11,4 +11,6 @@ void compute_long_range_correction(lj_params *, misc_params *,
 void compute_energy_and_force( Atoms *, lj_params *, misc_params *, 
                                float, float, float );
 
+float minimum_image( float, float, float );
+
 #endif

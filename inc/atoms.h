@@ -13,6 +13,7 @@ typedef struct {
    float * fy; // array of y-component of force acting on atoms
    float * fz; // array of z-component of force acting on atoms
    int N; // number of atoms
+   float pot_energy; // potential energy of system
 } Atoms;
 
 void allocate_atoms(Atoms *,int);

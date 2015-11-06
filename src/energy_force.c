@@ -18,8 +18,7 @@ void compute_long_range_correction(lj_params * len_jo, misc_params * m_pars,
 }
 
 void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo, 
-                               misc_params * m_pars, float energy_long, 
-                               float force_long, float temp )
+                               misc_params * m_pars )
 {
 
    int atomi, atomj;

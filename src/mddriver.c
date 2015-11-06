@@ -4,6 +4,7 @@
 #include "initialization.h"
 #include "print_traj.h"
 #include "energy_force.h"
+#include "props.h"
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
@@ -50,25 +51,28 @@ void driver(int argc, char ** argv)
    // initialization of atomic velocities
    initialize_velocities( &atoms, &mp, T);   
 
-   // main loop:
-   //           (1) solve for energy/force
-   //           (2) update particle positions/velocities
-
+   // open file for writing trajectory
    FILE *fp_out;
    if ( cl.xyz_freq != 0 ) fp_out = fopen("traj.xyz","w");
+    
+   float props[4];
+   // props[0]: kinetic energy
+   // props[1]: potential energy
+   // props[2]: total energy
+   // props[3]: temperature
    
-   int i;
-   for (i=0; i < cl.n_timesteps; i++)
+   int istep;
+   for (istep=0; istep < cl.n_timesteps; istep++)
    {
-      if ( i % cl.xyz_freq == 0 )
+      if ( istep % cl.xyz_freq == 0 )
          print_xyz( fp_out, &atoms );
 
-      if ( i % cl.thermo_freq == 0 ) {
-         // calculate properties
-         // output properties
+      if ( istep % cl.thermo_freq == 0 ) {
+         calc_props( &atoms, &mp, ulong, T, props );
+         //output_props();
       }
 
-      compute_energy_and_force( &atoms, &lj, &mp, ulong, vlong, T );
+      compute_energy_and_force( &atoms, &lj, &mp );
       //update_positions( &atoms );
 
    }

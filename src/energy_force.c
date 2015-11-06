@@ -21,4 +21,18 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jon,
                                float force_long, float temp )
 {
 
+   float force = 0.0;
+   float pot_energy = 0.0;
+   
+   int atomi, atomj;
+   for (atomi=0; atomi < myatoms->N; atomi++)
+   {
+
+      for (atomj=atomi; atomj < myatoms->N; atomj++)
+      {
+
+      } 
+
+   }
+
 }

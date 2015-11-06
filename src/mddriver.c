@@ -65,6 +65,9 @@ void driver(int argc, char ** argv)
    int istep, thermo_trigger = 0;
    for (istep=0; istep < cl.n_timesteps; istep++)
    {
+      compute_energy_and_force( &atoms, &lj, &mp );
+      //update_positions( &atoms ); // include PBC
+  
       if ( istep % cl.xyz_freq == 0 )
          print_xyz( fp_out, &atoms );
 
@@ -78,11 +81,12 @@ void driver(int argc, char ** argv)
          print_props( props, istep);
       }
 
-      compute_energy_and_force( &atoms, &lj, &mp );
-      //update_positions( &atoms );
-
    }
+   printf("Simulation Complete!\n");
 
+   // TODO: print timing information
+   //       - would be awesome to split timings across various functions
+   //         ( grab from LAMMPS source? )
 
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);

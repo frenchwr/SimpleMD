@@ -25,6 +25,8 @@ typedef struct {
    float side;
    float sideh;
    float density;
+   float xmass;
+   float xmassi;
 } misc_params;
 
 void set_params(lj_params *, misc_params *, int, float);

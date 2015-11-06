@@ -29,6 +29,8 @@ void set_params(lj_params * len_jo, misc_params * m_pars, int n_atoms, float vol
    m_pars->pi = 2.0 * asin(1.0);
    m_pars->MW = 16.042; // molecular weight (grams/mole)
    m_pars->kb = 0.00001380660; // Bolztmann's Constant (aJ/molecule/K)
+   m_pars->xmass = m_pars->MW * 100.0 / 6.0220;
+   m_pars->xmassi = 1.0 / m_pars->xmass;
    len_jo->eps *= m_pars->kb;
 
 }

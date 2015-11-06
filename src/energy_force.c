@@ -17,7 +17,7 @@ void compute_long_range_correction(lj_params * len_jo, misc_params * m_pars,
 
 }
 
-void compute_energy_and_force( Atoms * myatoms, lj_params * len_jon, 
+void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo, 
                                misc_params * m_pars, float energy_long, 
                                float force_long, float temp )
 {
@@ -38,6 +38,12 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jon,
          yyi = minimum_image( yyi, m_pars->side, m_pars->sideh );
          float zzi = myatoms->zz[atomi] - myatoms->zz[atomj];
          zzi = minimum_image( zzi, m_pars->side, m_pars->sideh );
+
+         float dis2 = xxi*xxi + yyi*yyi + zzi*zzi;
+         if ( dis2 <= len_jo->rcut2 )
+         {
+         
+         }
 
       } 
 

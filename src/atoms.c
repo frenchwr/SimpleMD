@@ -10,6 +10,9 @@ void allocate_atoms( Atoms * myatoms, int n_atoms )
    myatoms->vx = safe_malloc_float( n_atoms );
    myatoms->vy = safe_malloc_float( n_atoms );
    myatoms->vz = safe_malloc_float( n_atoms );
+   myatoms->fx = safe_malloc_float( n_atoms );
+   myatoms->fy = safe_malloc_float( n_atoms );
+   myatoms->fz = safe_malloc_float( n_atoms );
    myatoms->N = n_atoms;
 }
 
@@ -32,4 +35,7 @@ void free_atoms( Atoms * myatoms )
    free(myatoms->vx);
    free(myatoms->vy);
    free(myatoms->vz);
+   free(myatoms->fx);
+   free(myatoms->fy);
+   free(myatoms->fz);
 }

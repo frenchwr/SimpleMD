@@ -45,8 +45,8 @@ void driver(int argc, char ** argv)
    misc_params mp;
    set_params( &lj, &mp, cl.N, Vn);
 
-   printf("box length: %12.5f\n",mp.side);
-   printf("density: %14.9f\n",mp.density);
+   printf("box length: %.3e Angstrom\n",mp.side);
+   printf("density: %.3e molecules/Ang^3\n",mp.density);
 
    float ulong, vlong;
    compute_long_range_correction( &lj, &mp, &ulong, &vlong);

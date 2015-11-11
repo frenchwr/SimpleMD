@@ -33,7 +33,7 @@ void calc_props( Atoms * myatoms, misc_params * m_pars,
 void print_header()
 {
 
-   printf(" Timestep     KE           PE         TotE        Temp      Pressure\n");
+   printf(" Timestep     KE          PE        TotE       Temp   Pressure\n");
 
 }
 
@@ -41,7 +41,9 @@ void print_props( float * myprops, int timestep )
 {
 
    printf("%*d",7,timestep);   
-   printf("  %10.7f   %10.7f   %10.7f   %7.2f   %13.10f\n",
+   //printf("  %10.7f   %10.7f   %10.7f   %7.2f   %13.10f\n",
+   //       myprops[0],myprops[1],myprops[2],myprops[3],myprops[4]);   
+   printf("   %.3e  %.3e  %.5e %7.2f  %.3e\n",
           myprops[0],myprops[1],myprops[2],myprops[3],myprops[4]);   
 
 }

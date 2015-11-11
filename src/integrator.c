@@ -7,18 +7,24 @@ void update_positions( Atoms * myatoms, misc_params * m_pars )
 
    // Update particle positions with velocity Verlet algorithm
    int atomi;
+   float const_fac = 0.5 * m_pars->xmassi * m_pars->dt;
    for ( atomi = 0; atomi < myatoms->N; atomi++ )
    {
-      float dx = myatoms->vx[atomi] * m_pars->dt + 0.5 * myatoms->fx[atomi] * m_pars->xmassi * m_pars->dt2;
-      float dy = myatoms->vy[atomi] * m_pars->dt + 0.5 * myatoms->fy[atomi] * m_pars->xmassi * m_pars->dt2;
-      float dz = myatoms->vz[atomi] * m_pars->dt + 0.5 * myatoms->fz[atomi] * m_pars->xmassi * m_pars->dt2;
-      myatoms->xx[atomi] += dx;
-      myatoms->yy[atomi] += dy;
-      myatoms->zz[atomi] += dz;
+      // compute factor for subsequent updates
+      float vx_halfts_fac = const_fac * myatoms->fx[atomi];
+      float vy_halfts_fac = const_fac * myatoms->fy[atomi];
+      float vz_halfts_fac = const_fac * myatoms->fz[atomi];
 
-      myatoms->vx[atomi] += 0.5 * myatoms->fx[atomi] * m_pars->xmassi * m_pars->dt;
-      myatoms->vy[atomi] += 0.5 * myatoms->fy[atomi] * m_pars->xmassi * m_pars->dt;
-      myatoms->vz[atomi] += 0.5 * myatoms->fz[atomi] * m_pars->xmassi * m_pars->dt;
+      // update particle positions
+      myatoms->xx[atomi] += myatoms->vx[atomi] * m_pars->dt + vx_halfts_fac * m_pars->dt;
+      myatoms->yy[atomi] += myatoms->vy[atomi] * m_pars->dt + vy_halfts_fac * m_pars->dt;
+      myatoms->zz[atomi] += myatoms->vz[atomi] * m_pars->dt + vz_halfts_fac * m_pars->dt;
+
+      // compute velocity at half timestep, and store it as the 
+      // particle velocity
+      myatoms->vx[atomi] += vx_halfts_fac;
+      myatoms->vy[atomi] += vy_halfts_fac;
+      myatoms->vz[atomi] += vz_halfts_fac;
    }
 
 }
@@ -28,11 +34,12 @@ void update_velocities( Atoms * myatoms, misc_params * m_pars )
 
    // Update particle velocities with velocity Verlet algorithm
    int atomi;
+   float const_fac = 0.5 * m_pars->xmassi * m_pars->dt;
    for ( atomi = 0; atomi < myatoms->N; atomi++ )
    {
-      myatoms->vx[atomi] += 0.5 * myatoms->fx[atomi] * m_pars->xmassi * m_pars->dt;
-      myatoms->vy[atomi] += 0.5 * myatoms->fy[atomi] * m_pars->xmassi * m_pars->dt;
-      myatoms->vz[atomi] += 0.5 * myatoms->fz[atomi] * m_pars->xmassi * m_pars->dt;
+      myatoms->vx[atomi] += const_fac * myatoms->fx[atomi];     
+      myatoms->vy[atomi] += const_fac * myatoms->fy[atomi];     
+      myatoms->vz[atomi] += const_fac * myatoms->fz[atomi];     
    }
 
 }

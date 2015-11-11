@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// driver
 void driver(int argc, char ** argv)
 {
 
@@ -36,9 +35,8 @@ void driver(int argc, char ** argv)
    // Temp = K
    //
    // Specify Thermodynamic state
-   float T = 298.0; // temperature (K)
-   //float T = 150.0; // temperature (K)
-   float Vn = 1.0 / 0.00002468; // specific volume (Ang^3/molecule)
+   float T = 150.0; // temperature (K)
+   float Vn = 1.0 / 0.008832; // specific volume (Ang^3/molecule)
    //float Vn = 113.23; // specific volume (Ang^3/molecule)
 
    lj_params lj;

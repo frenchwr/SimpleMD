@@ -6,10 +6,17 @@
 #include "energy_force.h"
 #include "props.h"
 #include "integrator.h"
+#include "timer.h"
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
 #include <stdlib.h>
+
+double timer[4];
+// timer[0]: total simulation time
+// timer[1]: energy/force computation time
+// timer[2]: particle position/velocity update time
+// timer[3]: thermo and trajectory print time
 
    // TODO: 
    //      (1) print timing information
@@ -67,17 +74,20 @@ void driver(int argc, char ** argv)
    FILE *fp_out;
    if ( cl.xyz_freq != 0 ) fp_out = fopen("traj.xyz","w");
     
-   float props[5];
    // props[0]: kinetic energy
    // props[1]: potential energy
    // props[2]: total energy
    // props[3]: temperature
    // props[4]: pressure
+   float props[5];
+
+   initialize_timer( timer );
    
    compute_energy_and_force( &atoms, &lj, &mp ); // compute initial energy/force
    printf("Beginning simulation....\n");
    print_header();
    int istep;
+   timeit(0,0,timer); // element 0, start timer
    for (istep=0; istep <= cl.n_timesteps; istep++)
    {
   
@@ -86,7 +96,7 @@ void driver(int argc, char ** argv)
 
       if ( istep % cl.thermo_freq == 0 || istep == cl.n_timesteps ) {
          calc_props( &atoms, &mp, ulong, vlong, T, props );
-         print_props( props, istep);
+         print_props( props, istep );
       }
 
       update_positions( &atoms, &mp );
@@ -95,7 +105,12 @@ void driver(int argc, char ** argv)
       update_velocities( &atoms, &mp );
 
    }
+   timeit(0,1,timer);
    printf("Simulation Complete!\n");
+   printf("Total simulation time: %10.3f secs\n",timer[0]);
+   printf("Force/energy time: %10.3f secs\n",timer[1]);
+   printf("Position/velocity update time: %10.3f secs\n",timer[2]);
+   printf("Thermo/trajectory output time: %10.3f secs\n",timer[3]);
 
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);

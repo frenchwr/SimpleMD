@@ -12,8 +12,7 @@ void set_params(lj_params * len_jo, misc_params * m_pars, int n_atoms, float vol
    len_jo->sig6 = powf(len_jo->sig,6.0);
    len_jo->sig12 = powf(len_jo->sig,12.0);
    len_jo->eps = 137.0; // well depth (K)
-   len_jo->rcut = 60.0; // interaction cutoff
-   //len_jo->rcut = 15.0; // interaction cutoff
+   len_jo->rcut = 15.0; // interaction cutoff
    len_jo->rcut2 = len_jo->rcut * len_jo->rcut;
    len_jo->rcut3 = powf(len_jo->rcut,3.0);
    len_jo->rcut9 = powf(len_jo->rcut,9.0);

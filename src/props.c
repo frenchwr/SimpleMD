@@ -1,6 +1,7 @@
 #include "atoms.h"
 #include "params.h"
 #include "props.h"
+#include "timer.h"
 #include <stdio.h>
 
 void calc_props( Atoms * myatoms, misc_params * m_pars, 
@@ -8,6 +9,7 @@ void calc_props( Atoms * myatoms, misc_params * m_pars,
                  float temp, float * myprops )
 {
 
+   timeit(3,0,timer);
    int atomi;
    float sumvsq = 0.0;
    for (atomi=0; atomi < myatoms->N; atomi++)
@@ -41,9 +43,8 @@ void print_props( float * myprops, int timestep )
 {
 
    printf("%*d",7,timestep);   
-   //printf("  %10.7f   %10.7f   %10.7f   %7.2f   %13.10f\n",
-   //       myprops[0],myprops[1],myprops[2],myprops[3],myprops[4]);   
    printf("   %.3e  %.3e  %.5e %7.2f  %.3e\n",
           myprops[0],myprops[1],myprops[2],myprops[3],myprops[4]);   
+   timeit(3,1,timer);
 
 }

@@ -3,28 +3,28 @@
 #include <time.h>
 #include <stdlib.h>
 
-void initialize_positions(Atoms * myatoms, float box_length)
+void initialize_positions(Atoms * myatoms, float box_length, float half_box_length)
 {
    int n_atoms = myatoms->N;
    float float_N = (float)n_atoms;
-   float box_length_float = cbrtf( float_N ); // from <math.h>
-   int box_length_round = (int)box_length_float;
-   float box_length_round_float = (float)box_length_round;
-   if ( box_length_float - box_length_round_float > 1.0E-14 ) {
-      box_length_round++;
-      box_length_round_float = (float)box_length_round;
+   float atoms1d_float = cbrtf( float_N ); // from <math.h>
+   int atoms1d_round = (int)atoms1d_float;
+   float atoms1d_round_float = (float)atoms1d_round;
+   if ( atoms1d_float - atoms1d_round_float > 1.0E-14 ) {
+      atoms1d_round++;
+      atoms1d_round_float = (float)atoms1d_round;
    }
 
    int cur_atom_cnt = 0;
-   float atom_offset = box_length / box_length_round_float;
+   float atom_offset = box_length / atoms1d_round_float;
    int ix,iy,iz;
-   for ( ix=0; ix < box_length_round; ix++) {
-      for ( iy=0; iy < box_length_round; iy++) {
-         for ( iz=0; iz < box_length_round; iz++) {
+   for ( ix=0; ix < atoms1d_round; ix++) {
+      for ( iy=0; iy < atoms1d_round; iy++) {
+         for ( iz=0; iz < atoms1d_round; iz++) {
             if ( cur_atom_cnt < n_atoms ) {
-               myatoms->xx[cur_atom_cnt] = atom_offset*(float)ix;
-               myatoms->yy[cur_atom_cnt] = atom_offset*(float)iy;
-               myatoms->zz[cur_atom_cnt] = atom_offset*(float)iz;
+               myatoms->xx[cur_atom_cnt] = atom_offset * (float)ix - half_box_length;
+               myatoms->yy[cur_atom_cnt] = atom_offset * (float)iy - half_box_length;
+               myatoms->zz[cur_atom_cnt] = atom_offset * (float)iz - half_box_length;
             }
             cur_atom_cnt++;
          }

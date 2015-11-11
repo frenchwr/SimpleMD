@@ -44,11 +44,11 @@ void pbc( Atoms * myatoms, float box_length, float half_box_length )
    for ( atomi = 0; atomi < myatoms->N; atomi++ )
    {
       if (myatoms->xx[atomi] > half_box_length ) myatoms->xx[atomi] -= box_length; 
-      if (myatoms->xx[atomi] < half_box_length ) myatoms->xx[atomi] += box_length; 
+      if (myatoms->xx[atomi] < -half_box_length ) myatoms->xx[atomi] += box_length; 
       if (myatoms->yy[atomi] > half_box_length ) myatoms->yy[atomi] -= box_length; 
-      if (myatoms->yy[atomi] < half_box_length ) myatoms->yy[atomi] += box_length; 
+      if (myatoms->yy[atomi] < -half_box_length ) myatoms->yy[atomi] += box_length; 
       if (myatoms->zz[atomi] > half_box_length ) myatoms->zz[atomi] -= box_length; 
-      if (myatoms->zz[atomi] < half_box_length ) myatoms->zz[atomi] += box_length; 
+      if (myatoms->zz[atomi] < -half_box_length ) myatoms->zz[atomi] += box_length; 
    }
 
 }

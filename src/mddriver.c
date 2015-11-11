@@ -47,7 +47,7 @@ void driver(int argc, char ** argv)
    compute_long_range_correction( &lj, &mp, &ulong, &vlong);
 
    // initialization of atomic positions
-   initialize_positions( &atoms, mp.side);
+   initialize_positions( &atoms, mp.side, mp.sideh);
 
    // initialization of atomic velocities
    initialize_velocities( &atoms, &mp, T);   
@@ -83,7 +83,7 @@ void driver(int argc, char ** argv)
 
       update_positions( &atoms, &mp );
       pbc( &atoms, mp.side, mp.sideh ); // impose periodic boundary conditions
-      compute_energy_and_force( &atoms, &lj, &mp ); // compute initial energy/force
+      compute_energy_and_force( &atoms, &lj, &mp ); // compute energy/force for next timestep
       update_velocities( &atoms, &mp );
 
    }

@@ -14,6 +14,7 @@ typedef struct {
    float * fz; // array of z-component of force acting on atoms
    int N; // number of atoms
    float pot_energy; // potential energy of system
+   float virial; // virial of system
 } Atoms;
 
 void allocate_atoms(Atoms *,int);

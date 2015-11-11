@@ -29,6 +29,7 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo,
       myatoms->fz[atomi] = 0.0;
    }
    myatoms->pot_energy = 0.0;
+   myatoms->virial = 0.0;
    
    for (atomi=0; atomi < myatoms->N; atomi++)
    {
@@ -53,6 +54,7 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo,
                                    len_jo->sig6 * dis6i;
             float fterm = dis2i * ( 2.0 * len_jo->sig12 * dis12i -
                                           len_jo->sig6 * dis6i );
+            myatoms->virial -= fterm * dis2;
             
             myatoms->fx[atomi] += fterm * xxi;
             myatoms->fy[atomi] += fterm * yyi;
@@ -73,6 +75,7 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo,
       myatoms->fz[atomi] *= 24.0 * len_jo->eps;
    }
    myatoms->pot_energy *= 4.0 * len_jo->eps;
+   myatoms->virial *= 24.0 * len_jo->eps;
 
 }
 

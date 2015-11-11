@@ -36,12 +36,17 @@ void driver(int argc, char ** argv)
    // Temp = K
    //
    // Specify Thermodynamic state
-   float T = 150.0; // temperature (K)
-   float Vn = 113.23; // specific volume (Ang^3/molecule)
+   float T = 298.0; // temperature (K)
+   //float T = 150.0; // temperature (K)
+   float Vn = 1.0 / 0.00002468; // specific volume (Ang^3/molecule)
+   //float Vn = 113.23; // specific volume (Ang^3/molecule)
 
    lj_params lj;
    misc_params mp;
    set_params( &lj, &mp, cl.N, Vn);
+
+   printf("box length: %12.5f\n",mp.side);
+   printf("density: %14.9f\n",mp.density);
 
    float ulong, vlong;
    compute_long_range_correction( &lj, &mp, &ulong, &vlong);
@@ -56,11 +61,12 @@ void driver(int argc, char ** argv)
    FILE *fp_out;
    if ( cl.xyz_freq != 0 ) fp_out = fopen("traj.xyz","w");
     
-   float props[4];
+   float props[5];
    // props[0]: kinetic energy
    // props[1]: potential energy
    // props[2]: total energy
    // props[3]: temperature
+   // props[4]: pressure
    
    compute_energy_and_force( &atoms, &lj, &mp ); // compute initial energy/force
    printf("Beginning simulation....\n");
@@ -73,7 +79,7 @@ void driver(int argc, char ** argv)
          print_xyz( fp_out, &atoms );
 
       if ( istep % cl.thermo_freq == 0 || istep == cl.n_timesteps ) {
-         calc_props( &atoms, &mp, ulong, T, props );
+         calc_props( &atoms, &mp, ulong, vlong, T, props );
          print_props( props, istep);
       }
 

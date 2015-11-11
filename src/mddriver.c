@@ -11,6 +11,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+   // TODO: 
+   //      (1) print timing information
+   //       - would be awesome to split timings across various functions
+   //         ( grab from LAMMPS source? )
+   //      (2) pass appropriate args as const
+   //      (3) make argument names consistent
+   //      (4) add better documentation in code   
+
 void driver(int argc, char ** argv)
 {
 
@@ -88,10 +96,6 @@ void driver(int argc, char ** argv)
 
    }
    printf("Simulation Complete!\n");
-
-   // TODO: print timing information
-   //       - would be awesome to split timings across various functions
-   //         ( grab from LAMMPS source? )
 
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);

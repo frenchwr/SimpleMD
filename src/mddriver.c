@@ -62,22 +62,18 @@ void driver(int argc, char ** argv)
    // props[2]: total energy
    // props[3]: temperature
    
-   printf("Beginning simulation....\n");
    compute_energy_and_force( &atoms, &lj, &mp ); // compute initial energy/force
-   int istep, thermo_trigger = 0;
-   for (istep=0; istep < cl.n_timesteps; istep++)
+   printf("Beginning simulation....\n");
+   print_header();
+   int istep;
+   for (istep=0; istep <= cl.n_timesteps; istep++)
    {
   
       if ( istep % cl.xyz_freq == 0 )
          print_xyz( fp_out, &atoms );
 
-      if ( istep % cl.thermo_freq == 0 ) {
+      if ( istep % cl.thermo_freq == 0 || istep == cl.n_timesteps ) {
          calc_props( &atoms, &mp, ulong, T, props );
-         if ( !thermo_trigger )
-         {
-            thermo_trigger = 1;
-            print_header();
-         }
          print_props( props, istep);
       }
 
@@ -95,6 +91,7 @@ void driver(int argc, char ** argv)
 
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);
+
 }
 
 // main function

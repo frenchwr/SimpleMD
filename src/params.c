@@ -18,7 +18,7 @@ void set_params(lj_params * len_jo, misc_params * m_pars, int n_atoms, float vol
    len_jo->rcut9 = powf(len_jo->rcut,9.0);
 
    // Other parameters
-   m_pars->dt = 2.0; // timestep
+   m_pars->dt = 1.0; // timestep
    m_pars->dt2 = m_pars->dt * m_pars->dt;
    m_pars->dt2h = 0.5 * m_pars->dt2;
    m_pars->float_N = (float)n_atoms;

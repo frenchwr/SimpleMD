@@ -5,6 +5,7 @@
 #include "print_traj.h"
 #include "energy_force.h"
 #include "props.h"
+#include "integrator.h"
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
@@ -62,11 +63,10 @@ void driver(int argc, char ** argv)
    // props[3]: temperature
    
    printf("Beginning simulation....\n");
+   compute_energy_and_force( &atoms, &lj, &mp ); // compute initial energy/force
    int istep, thermo_trigger = 0;
    for (istep=0; istep < cl.n_timesteps; istep++)
    {
-      compute_energy_and_force( &atoms, &lj, &mp );
-      //update_positions( &atoms ); // include PBC
   
       if ( istep % cl.xyz_freq == 0 )
          print_xyz( fp_out, &atoms );
@@ -80,6 +80,11 @@ void driver(int argc, char ** argv)
          }
          print_props( props, istep);
       }
+
+      update_positions( &atoms, &mp );
+      pbc( &atoms, mp.side, mp.sideh ); // impose periodic boundary conditions
+      compute_energy_and_force( &atoms, &lj, &mp ); // compute initial energy/force
+      update_velocities( &atoms, &mp );
 
    }
    printf("Simulation Complete!\n");

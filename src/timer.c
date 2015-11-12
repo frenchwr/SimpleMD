@@ -15,7 +15,7 @@ void timeit( int array_element, int mode, double * time_array )
 
    static struct timeval tv[4][2];
 
-   gettimeofday(&tv[array_element][mode],NULL);
+   gettimeofday(&tv[array_element][mode],NULL); // from sys/time.h
    
    if ( mode == 1 )
       time_array[array_element] +=

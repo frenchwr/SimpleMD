@@ -12,19 +12,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-double timer[4];
 // timer[0]: total simulation time
 // timer[1]: energy/force computation time
 // timer[2]: particle position/velocity update time
 // timer[3]: thermo and trajectory print time
+double timer[4];
 
    // TODO: 
-   //      (1) print timing information
-   //       - would be awesome to split timings across various functions
-   //         ( grab from LAMMPS source? )
-   //      (2) pass appropriate args as const
-   //      (3) make argument names consistent
-   //      (4) add better documentation in code   
+   //      (1) pass appropriate args as const
+   //      (2) make argument names consistent
+   //      (3) add better documentation in code   
 
 void driver(int argc, char ** argv)
 {
@@ -52,7 +49,6 @@ void driver(int argc, char ** argv)
    // Specify Thermodynamic state
    float T = 150.0; // temperature (K)
    float Vn = 1.0 / 0.008832; // specific volume (Ang^3/molecule)
-   //float Vn = 113.23; // specific volume (Ang^3/molecule)
 
    lj_params lj;
    misc_params mp;
@@ -71,7 +67,7 @@ void driver(int argc, char ** argv)
    initialize_velocities( &atoms, &mp, T);   
 
    // open file for writing trajectory
-   FILE *fp_out;
+   FILE * fp_out = NULL;
    if ( cl.xyz_freq != 0 ) fp_out = fopen("traj.xyz","w");
     
    // props[0]: kinetic energy
@@ -81,13 +77,14 @@ void driver(int argc, char ** argv)
    // props[4]: pressure
    float props[5];
 
-   initialize_timer( timer );
-   
    compute_energy_and_force( &atoms, &lj, &mp ); // compute initial energy/force
+
    printf("Beginning simulation....\n");
    print_header();
    int istep;
-   timeit(0,0,timer); // element 0, start timer
+
+   initialize_timer( timer );
+   timeit(0,0,timer); // start timer
    for (istep=0; istep <= cl.n_timesteps; istep++)
    {
   
@@ -99,13 +96,14 @@ void driver(int argc, char ** argv)
          print_props( props, istep );
       }
 
-      update_positions( &atoms, &mp );
+      update_positions( &atoms, &mp ); // update particle positions for next timestep
       pbc( &atoms, mp.side, mp.sideh ); // impose periodic boundary conditions
       compute_energy_and_force( &atoms, &lj, &mp ); // compute energy/force for next timestep
-      update_velocities( &atoms, &mp );
+      update_velocities( &atoms, &mp ); // update particle velocities for next timestep
 
    }
-   timeit(0,1,timer);
+   timeit(0,1,timer); // end timer
+
    printf("Simulation Complete!\n");
    printf("Total simulation time:         %10.3f secs\n",timer[0]);
    printf("Force/energy time:             %10.3f secs (%5.2f%s)\n",

@@ -8,8 +8,8 @@
 // mddriver.c
 extern double timer[4];
 
-void initialize_timer( double * );
-void timeit( int, int, double * );
+void initialize_timer();
+void timeit( int, int );
 void print_timer();
 
 #endif

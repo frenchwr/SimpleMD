@@ -9,7 +9,7 @@ void calc_props( Atoms * myatoms, misc_params * m_pars,
                  float temp, float * myprops )
 {
 
-   timeit(3,0,timer);
+   timeit(3,0);
    int atomi;
    float sumvsq = 0.0;
    for (atomi=0; atomi < myatoms->N; atomi++)
@@ -45,6 +45,6 @@ void print_props( float * myprops, int timestep )
    printf("%*d",7,timestep);   
    printf("   %.3e  %.3e  %.5e %7.2f  %.3e\n",
           myprops[0],myprops[1],myprops[2],myprops[3],myprops[4]);   
-   timeit(3,1,timer);
+   timeit(3,1);
 
 }

@@ -7,7 +7,7 @@ void update_positions( Atoms * myatoms, misc_params * m_pars )
 {
 
    // Update particle positions with velocity Verlet algorithm
-   timeit(2,0,timer);
+   timeit(2,0);
    int atomi;
    float const_fac = 0.5 * m_pars->xmassi * m_pars->dt;
    for ( atomi = 0; atomi < myatoms->N; atomi++ )
@@ -35,7 +35,7 @@ void update_velocities( Atoms * myatoms, misc_params * m_pars )
 {
 
    // Update particle velocities with velocity Verlet algorithm
-   timeit(2,0,timer);
+   timeit(2,0);
    int atomi;
    float const_fac = 0.5 * m_pars->xmassi * m_pars->dt;
    for ( atomi = 0; atomi < myatoms->N; atomi++ )
@@ -44,7 +44,7 @@ void update_velocities( Atoms * myatoms, misc_params * m_pars )
       myatoms->vy[atomi] += const_fac * myatoms->fy[atomi];     
       myatoms->vz[atomi] += const_fac * myatoms->fz[atomi];     
    }
-   timeit(2,1,timer);
+   timeit(2,1);
 
 }
 
@@ -61,6 +61,6 @@ void pbc( Atoms * myatoms, float box_length, float half_box_length )
       if (myatoms->zz[atomi] > half_box_length ) myatoms->zz[atomi] -= box_length; 
       if (myatoms->zz[atomi] < -half_box_length ) myatoms->zz[atomi] += box_length; 
    }
-   timeit(2,1,timer);
+   timeit(2,1);
 
 }

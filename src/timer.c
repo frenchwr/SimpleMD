@@ -3,15 +3,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void initialize_timer( double * time_array )
+void initialize_timer( )
 {
 
    int i;
-   for ( i=0; i < 4; i++) time_array[i] = 0.0;
+   for ( i=0; i < 4; i++) timer[i] = 0.0;
 
 }
 
-void timeit( int array_element, int mode, double * time_array )
+void timeit( int array_element, int mode )
 {
 
    static struct timeval tv[4][2];
@@ -19,7 +19,7 @@ void timeit( int array_element, int mode, double * time_array )
    gettimeofday(&tv[array_element][mode],NULL); // from sys/time.h
    
    if ( mode == 1 )
-      time_array[array_element] +=
+      timer[array_element] +=
          (double) ( tv[array_element][1].tv_usec - 
                     tv[array_element][0].tv_usec  ) / 1000000 +
          (double) ( tv[array_element][1].tv_sec - 

@@ -22,7 +22,7 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo,
                                misc_params * m_pars )
 {
 
-   timeit(1,0,timer);
+   timeit(1,0);
    int atomi, atomj;
    for (atomi=0; atomi < myatoms->N; atomi++)
    {
@@ -78,7 +78,7 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo,
    }
    myatoms->pot_energy *= 4.0 * len_jo->eps;
    myatoms->virial *= 24.0 * len_jo->eps;
-   timeit(1,1,timer);
+   timeit(1,1);
 
 }
 

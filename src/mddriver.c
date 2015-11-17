@@ -83,8 +83,8 @@ void driver(int argc, char ** argv)
    print_header();
    int istep;
 
-   initialize_timer( timer );
-   timeit(0,0,timer); // start timer
+   initialize_timer();
+   timeit(0,0); // start timer
    for (istep=0; istep <= cl.n_timesteps; istep++)
    {
   
@@ -102,7 +102,7 @@ void driver(int argc, char ** argv)
       update_velocities( &atoms, &mp ); // update particle velocities for next timestep
 
    }
-   timeit(0,1,timer); // end timer
+   timeit(0,1); // end timer
 
    printf("Simulation Complete!\n");
    print_timer();

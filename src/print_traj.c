@@ -5,7 +5,7 @@
 
 void print_xyz(FILE * handle, Atoms * myatoms)
 {
-   timeit(3,0,timer);
+   timeit(3,0);
    fprintf(handle,"%d\n",myatoms->N);
    fprintf(handle,"atoms\n");
    int i;
@@ -15,6 +15,6 @@ void print_xyz(FILE * handle, Atoms * myatoms)
               myatoms->yy[i],
               myatoms->zz[i] );
    }
-   timeit(3,1,timer);
+   timeit(3,1);
 
 }

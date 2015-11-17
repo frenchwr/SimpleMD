@@ -105,13 +105,7 @@ void driver(int argc, char ** argv)
    timeit(0,1,timer); // end timer
 
    printf("Simulation Complete!\n");
-   printf("Total simulation time:         %10.3f secs\n",timer[0]);
-   printf("Force/energy time:             %10.3f secs (%5.2f%s)\n",
-          timer[1],100.0 * timer[1] / timer[0], "%" );
-   printf("Position/velocity update time: %10.3f secs (%5.2f%s)\n",
-          timer[2],100.0 * timer[2] / timer[0], "%" );
-   printf("Thermo/trajectory output time: %10.3f secs (%5.2f%s)\n",
-          timer[3],100.0 * timer[3] / timer[0], "%" );
+   print_timer();
 
    if ( cl.xyz_freq != 0 ) fclose(fp_out);
    free_atoms(&atoms);

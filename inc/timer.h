@@ -10,5 +10,6 @@ extern double timer[4];
 
 void initialize_timer( double * );
 void timeit( int, int, double * );
+void print_timer();
 
 #endif

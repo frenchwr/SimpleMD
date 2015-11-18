@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void print_xyz(FILE * handle, Atoms * myatoms)
+void print_xyz(FILE * handle, const Atoms * myatoms)
 {
    timeit(3,0);
    fprintf(handle,"%d\n",myatoms->N);

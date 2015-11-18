@@ -4,9 +4,9 @@
 #include "timer.h"
 #include <stdio.h>
 
-void calc_props( Atoms * myatoms, misc_params * m_pars, 
-                 float U_long_range_corr, float V_long_range_corr, 
-                 float temp, float * myprops )
+void calc_props( const Atoms * myatoms, const misc_params * m_pars, 
+                 const float U_long_range_corr, const float V_long_range_corr, 
+                 const float temp, float * myprops )
 {
 
    timeit(3,0);
@@ -39,7 +39,7 @@ void print_header()
 
 }
 
-void print_props( float * myprops, int timestep )
+void print_props( const float * myprops, const int timestep )
 {
 
    printf("%*d",7,timestep);   

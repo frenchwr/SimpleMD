@@ -5,8 +5,8 @@
 #include "params.h"
 #include "atoms.h"
 
-void update_positions( Atoms *, misc_params * );
-void update_velocities( Atoms *, misc_params * );
-void pbc( Atoms *, float, float );
+void update_positions( Atoms *, const misc_params * );
+void update_velocities( Atoms *, const misc_params * );
+void pbc( Atoms *, const float, const float );
 
 #endif

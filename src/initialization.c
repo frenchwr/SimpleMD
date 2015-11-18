@@ -3,7 +3,8 @@
 #include <time.h>
 #include <stdlib.h>
 
-void initialize_positions(Atoms * myatoms, float box_length, float half_box_length)
+void initialize_positions(Atoms * myatoms, const float box_length, 
+                          const float half_box_length)
 {
    int n_atoms = myatoms->N;
    float float_N = (float)n_atoms;
@@ -32,7 +33,8 @@ void initialize_positions(Atoms * myatoms, float box_length, float half_box_leng
    }
 }
 
-void initialize_velocities(Atoms * myatoms, misc_params * m_pars, float temp)
+void initialize_velocities(Atoms * myatoms, const misc_params * m_pars, 
+                           const float temp)
 {
    // temperature factor for velocity scaling
    float tempfac = 3.0 * m_pars->float_N * m_pars->kb * m_pars->xmassi * temp;  

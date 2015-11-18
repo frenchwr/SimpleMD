@@ -3,7 +3,7 @@
 #include "integrator.h"
 #include "timer.h"
 
-void update_positions( Atoms * myatoms, misc_params * m_pars )
+void update_positions( Atoms * myatoms, const misc_params * m_pars )
 {
 
    // Update particle positions with velocity Verlet algorithm
@@ -31,7 +31,7 @@ void update_positions( Atoms * myatoms, misc_params * m_pars )
 
 }
 
-void update_velocities( Atoms * myatoms, misc_params * m_pars )
+void update_velocities( Atoms * myatoms, const misc_params * m_pars )
 {
 
    // Update particle velocities with velocity Verlet algorithm
@@ -48,7 +48,7 @@ void update_velocities( Atoms * myatoms, misc_params * m_pars )
 
 }
 
-void pbc( Atoms * myatoms, float box_length, float half_box_length )
+void pbc( Atoms * myatoms, const float box_length, const float half_box_length )
 {
 
    int atomi;

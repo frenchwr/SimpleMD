@@ -5,7 +5,7 @@
 #include "atoms.h"
 #include "params.h"
 
-void initialize_positions(Atoms *, float, float);
-void initialize_velocities(Atoms *, misc_params *, float);
+void initialize_positions(Atoms *, const float, const float);
+void initialize_velocities(Atoms *, const misc_params *, const float);
 
 #endif

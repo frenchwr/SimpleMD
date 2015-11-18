@@ -3,7 +3,7 @@
 #include "atoms.h"
 #include "timer.h"
 
-void compute_long_range_correction(lj_params * len_jo, misc_params * m_pars,
+void compute_long_range_correction(const lj_params * len_jo, const misc_params * m_pars,
                                    float * energy_long, float * force_long )
 {
 
@@ -18,8 +18,8 @@ void compute_long_range_correction(lj_params * len_jo, misc_params * m_pars,
 
 }
 
-void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo, 
-                               misc_params * m_pars )
+void compute_energy_and_force( Atoms * myatoms, const lj_params * len_jo, 
+                               const misc_params * m_pars )
 {
 
    timeit(1,0);
@@ -82,7 +82,8 @@ void compute_energy_and_force( Atoms * myatoms, lj_params * len_jo,
 
 }
 
-float minimum_image( float dist, float box_length, float half_box_length )
+float minimum_image( const float dist, const float box_length, 
+                     const float half_box_length )
 {
    float min_dist = dist;
    if (dist > half_box_length ) min_dist = dist - box_length; 

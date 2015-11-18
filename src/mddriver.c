@@ -19,8 +19,9 @@
 double timer[4];
 
 // TODO: 
-//      (1) pass appropriate args as const
-//      (2) add better documentation in code   
+//      (1) add better documentation in code
+//      (2) is it bad practice to pass entire Atom object when 
+//          only updating positions or velocities?   
 
 void driver(int argc, char ** argv)
 {

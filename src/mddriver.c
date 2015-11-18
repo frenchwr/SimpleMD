@@ -18,10 +18,9 @@
 // timer[3]: thermo and trajectory print time
 double timer[4];
 
-   // TODO: 
-   //      (1) pass appropriate args as const
-   //      (2) make argument names consistent
-   //      (3) add better documentation in code   
+// TODO: 
+//      (1) pass appropriate args as const
+//      (2) add better documentation in code   
 
 void driver(int argc, char ** argv)
 {

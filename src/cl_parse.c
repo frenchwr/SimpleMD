@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-args parse_command_line(int argc,char ** argv)
+args parse_command_line(const int n_args,char ** arg_array)
 {
 
    // defaults
@@ -15,24 +15,24 @@ args parse_command_line(int argc,char ** argv)
    cl_args.thermo_freq = 100;
 
    int cnt = 1;
-   while ( cnt < argc )
+   while ( cnt < n_args )
    {
 
-      if ( !strcmp(argv[cnt],"-N") ) 
-         cl_args.N = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"-ts") ) 
-         cl_args.n_timesteps = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"-xyz") ) 
-         cl_args.xyz_freq = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"-o") ) 
-         cl_args.thermo_freq = check_arg_sane( argv,++cnt,argc );
-      else if ( !strcmp(argv[cnt],"--help") || !strcmp(argv[cnt],"-h") ) {
+      if ( !strcmp(arg_array[cnt],"-N") ) 
+         cl_args.N = check_arg_sane( arg_array,++cnt,n_args );
+      else if ( !strcmp(arg_array[cnt],"-ts") ) 
+         cl_args.n_timesteps = check_arg_sane( arg_array,++cnt,n_args );
+      else if ( !strcmp(arg_array[cnt],"-xyz") ) 
+         cl_args.xyz_freq = check_arg_sane( arg_array,++cnt,n_args );
+      else if ( !strcmp(arg_array[cnt],"-o") ) 
+         cl_args.thermo_freq = check_arg_sane( arg_array,++cnt,n_args );
+      else if ( !strcmp(arg_array[cnt],"--help") || !strcmp(arg_array[cnt],"-h") ) {
          printf("Usage: ./run_md [-N <n_particles>] [-ts <n_timesteps>] [-xyz <xyz_file_output_frequency>] [-o <thermo_output_frequency>]\n");
          printf("Defaults:\nn_particles: 100\nn_timesteps: 10000\nxyz_file_output_fequency: 100\nthermo_output_frequency: 100\n");
          exit(-1);
       }
       else {
-         printf("\n***Error: Unrecognized CL option: %s\n\n",argv[cnt]);
+         printf("\n***Error: Unrecognized CL option: %s\n\n",arg_array[cnt]);
          printf("Usage: ./run_md [-N <n_particles>] [-ts <n_timesteps>] [-xyz <xyz_file_output_frequency>] [-o <thermo_output_frequency>]\n");
          printf("Defaults:\nn_particles: 100\nn_timesteps: 10000\nxyz_file_output_fequency: 100\nthermo_output_frequency: 100\n");
          exit(-1);
@@ -52,10 +52,10 @@ args parse_command_line(int argc,char ** argv)
 
 }
 
-int check_arg_sane( char ** arg_strs, int arg_i, int n_args )
+int check_arg_sane( char ** arg_strs, const int arg_i, const int num_args )
 {
 
-   if ( n_args <= arg_i ) {
+   if ( num_args <= arg_i ) {
       printf("Expected integer after flag: %s\n",arg_strs[arg_i-1]);
       exit(-1);
    }

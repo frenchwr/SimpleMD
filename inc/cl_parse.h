@@ -9,7 +9,7 @@ typedef struct {
    int thermo_freq; // output frequency of thermodynamic quantities
 } args;
 
-args parse_command_line(int,char **);
-int check_arg_sane( char **, int, int );
+args parse_command_line( const int, char ** );
+int check_arg_sane( char **, const int, const int );
 
 #endif

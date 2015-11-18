@@ -23,7 +23,7 @@ double timer[4];
 //      (2) is it bad practice to pass entire Atom object when 
 //          only updating positions or velocities?   
 
-void driver(int argc, char ** argv)
+void driver(const int arg_count, char ** arg_list)
 {
 
    // parse command line
@@ -32,7 +32,7 @@ void driver(int argc, char ** argv)
    //                (2) Number of timesteps
    //                (3) xyz output frequency
    //                (4) thermo output frequency
-   args cl = parse_command_line( argc, argv);
+   args cl = parse_command_line( arg_count, arg_list);
 
    // Allocate space to store atomic positions and velocities
    Atoms atoms; 

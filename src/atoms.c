@@ -2,6 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//**********************************************************************
+// allocate_atoms() function
+//   - Dynamically allocates space for atomic positions, velocity, 
+//     and force.
+//   - Arguments:
+//       - myatoms: struct containing all atomic information.
+//       - n_atoms: number of atoms in simulation.
+//**********************************************************************
 void allocate_atoms( Atoms * myatoms, const int n_atoms )
 {
    myatoms->xx = safe_malloc_float( n_atoms );
@@ -16,6 +24,12 @@ void allocate_atoms( Atoms * myatoms, const int n_atoms )
    myatoms->N = n_atoms;
 }
 
+//**********************************************************************
+// safe_malloc_float() function
+//   - Allocates array for float type and checks to see if successful.
+//   - Arguments:
+//       - vec_size: desired size of array.
+//**********************************************************************
 float * safe_malloc_float(const int vec_size)
 {
    float * vec;
@@ -27,6 +41,12 @@ float * safe_malloc_float(const int vec_size)
    return vec;
 }
 
+//**********************************************************************
+// free_atoms() function
+//   - Releases memory used for storing atomic information.
+//   - Arguments:
+//       - myatoms: struct containing all atomic information.
+//**********************************************************************
 void free_atoms( Atoms * myatoms )
 {
    free(myatoms->xx);

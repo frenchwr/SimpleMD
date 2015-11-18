@@ -16,13 +16,20 @@
 // timer[1]: energy/force computation time
 // timer[2]: particle position/velocity update time
 // timer[3]: thermo and trajectory print time
-double timer[4];
+double timer[4]; // global to improve readability of code
 
 // TODO: 
 //      (1) add better documentation in code
-//      (2) is it bad practice to pass entire Atom object when 
-//          only updating positions or velocities?   
 
+//**************************************************************************
+// driver() function
+//   - Main body of program.
+//   - Creates Atoms structure, allocates memory, initializes parameters,
+//     and runs simulation.
+//   - Arguments:
+//       - arg_count: number of arguments passed from command line
+//       - arg_list: array of strings containing arguments from command line
+//**************************************************************************
 void driver(const int arg_count, char ** arg_list)
 {
 
@@ -35,28 +42,32 @@ void driver(const int arg_count, char ** arg_list)
    args cl = parse_command_line( arg_count, arg_list);
 
    // Allocate space to store atomic positions and velocities
-   Atoms atoms; 
-   allocate_atoms( &atoms, cl.N);
+   Atoms atoms; // see atoms.h for definition of Atoms data structure
+   allocate_atoms( &atoms, cl.N); // allocate space on heap for storing atomic data
 
-   // initialization of parameters
+   // Specify Thermodynamic state
+   float Temperature = 150.0; // temperature (K)
+   float Vn = 1.0 / 0.008832; // specific volume (Ang^3/molecule)
+
    // Units are as follows:
    // length: Angstroms (1.0e-10 m)
    // time: fs (1.0e-15 s)
    // xmass = 1.0e-28 kg
    // energy = aJ (1.0e-18 J)
    // Temp = K
-   //
-   // Specify Thermodynamic state
-   float Temperature = 150.0; // temperature (K)
-   float Vn = 1.0 / 0.008832; // specific volume (Ang^3/molecule)
+   
+   // Parameter initialization
+   lj_params lj; // parameters for computing interaction potential
+   misc_params mp; // other miscellaneous parameters needed throughout simulation
+   set_params( &lj, &mp, cl.N, Vn); // load parameters
 
-   lj_params lj;
-   misc_params mp;
-   set_params( &lj, &mp, cl.N, Vn);
-
+   // Print a few of the computed parameters
    printf("box length: %.3e Angstrom\n",mp.side);
    printf("density: %.3e molecules/Ang^3\n",mp.density);
 
+   // Compute the long range correction in energy and force
+   // These values are constant throughout the simulation and compensate for the
+   // total force/energy lost due to using a finite interaction cutoff
    float ulong, vlong;
    compute_long_range_correction( &lj, &mp, &ulong, &vlong);
 
@@ -89,11 +100,11 @@ void driver(const int arg_count, char ** arg_list)
    {
   
       if ( istep % cl.xyz_freq == 0 )
-         print_xyz( fp_out, &atoms );
+         print_xyz( fp_out, &atoms ); // prints to traj.xyz in current directory
 
       if ( istep % cl.thermo_freq == 0 || istep == cl.n_timesteps ) {
          calc_props( &atoms, &mp, ulong, vlong, Temperature, props );
-         print_props( props, istep );
+         print_props( props, istep ); // prints thermo output to screen
       }
 
       update_positions( &atoms, &mp ); // update particle positions for next timestep
@@ -112,7 +123,14 @@ void driver(const int arg_count, char ** arg_list)
 
 }
 
-// main function
+//**********************************************************************
+// main() function
+//   - Required in all C programs.
+//   - Execution of entire program begins here.
+//   - Arguments:
+//       - argc: number of arguments passed from command line
+//       - argv: array of strings containing arguments from command line
+//**********************************************************************
 int main(int argc, char ** argv)
 {
 

@@ -4,7 +4,15 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-args parse_command_line(const int n_args,char ** arg_array)
+//**************************************************************************
+// parse_command_line() function
+//   - Parses command line and converts command-line strings to 
+//     appropriate types
+//   - Arguments:
+//       - n_args: number of arguments passed from command line
+//       - arg_array: array of strings containing arguments from command line
+//***************************************************************************
+args parse_command_line(const int n_args, char ** arg_array)
 {
 
    // defaults
@@ -52,6 +60,15 @@ args parse_command_line(const int n_args,char ** arg_array)
 
 }
 
+//**************************************************************************
+// check_arg_sane() function
+//   - Runs a few sanity checks to make sure we aren't passing nonsense 
+//     to the program via the command line.
+//   - Arguments:
+//       - arg_strs: array of strings containing arguments from command line
+//       _ arg_i: index of argument in argument list
+//       - num_args: number of arguments passed from command line
+//***************************************************************************
 int check_arg_sane( char ** arg_strs, const int arg_i, const int num_args )
 {
 

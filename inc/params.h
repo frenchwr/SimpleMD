@@ -15,20 +15,16 @@ typedef struct {
 
 typedef struct {
    float dt; // timestep
-   float dt2;
-   float dt2h;
-   float pi;
+   float pi; // 3.14
    float kb; // Bolztmann's Constant (aJ/molecule/K)
-   float MW; // molecular weight (grams/mole)
-   float float_N;
-   float Vol;
-   float side;
-   float sideh;
-   float density;
-   float xmass;
-   float xmassi;
+   float float_N; // # atoms as float
+   float side; // length of side of box
+   float sideh; // half length of box
+   float density; // density of particles in box
+   float xmass; // particle mass
+   float xmassi; // inverse of particle mass
 } misc_params;
 
-void set_params(lj_params *, misc_params *, int, float);
+void set_params(lj_params *, misc_params *, const int, const float);
 
 #endif

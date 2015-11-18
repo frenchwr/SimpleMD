@@ -17,8 +17,8 @@ typedef struct {
    float virial; // virial of system
 } Atoms;
 
-void allocate_atoms(Atoms *,int);
-float * safe_malloc_float(int);
-void free_atoms(Atoms *);
+void allocate_atoms( Atoms *, const int);
+float * safe_malloc_float( const int );
+void free_atoms( Atoms * );
 
 #endif

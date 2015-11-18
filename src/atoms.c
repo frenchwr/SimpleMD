@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void allocate_atoms( Atoms * myatoms, int n_atoms )
+void allocate_atoms( Atoms * myatoms, const int n_atoms )
 {
    myatoms->xx = safe_malloc_float( n_atoms );
    myatoms->yy = safe_malloc_float( n_atoms );
@@ -16,7 +16,7 @@ void allocate_atoms( Atoms * myatoms, int n_atoms )
    myatoms->N = n_atoms;
 }
 
-float * safe_malloc_float(int vec_size)
+float * safe_malloc_float(const int vec_size)
 {
    float * vec;
    vec = (float *)malloc( vec_size * sizeof(float) );

@@ -46,7 +46,7 @@ void driver(int argc, char ** argv)
    // Temp = K
    //
    // Specify Thermodynamic state
-   float T = 150.0; // temperature (K)
+   float Temperature = 150.0; // temperature (K)
    float Vn = 1.0 / 0.008832; // specific volume (Ang^3/molecule)
 
    lj_params lj;
@@ -63,7 +63,7 @@ void driver(int argc, char ** argv)
    initialize_positions( &atoms, mp.side, mp.sideh);
 
    // initialization of atomic velocities
-   initialize_velocities( &atoms, &mp, T);   
+   initialize_velocities( &atoms, &mp, Temperature);   
 
    // open file for writing trajectory
    FILE * fp_out = NULL;
@@ -91,7 +91,7 @@ void driver(int argc, char ** argv)
          print_xyz( fp_out, &atoms );
 
       if ( istep % cl.thermo_freq == 0 || istep == cl.n_timesteps ) {
-         calc_props( &atoms, &mp, ulong, vlong, T, props );
+         calc_props( &atoms, &mp, ulong, vlong, Temperature, props );
          print_props( props, istep );
       }
 

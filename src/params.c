@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void set_params(lj_params * len_jo, misc_params * m_pars, int n_atoms, float vol_norm)
+void set_params(lj_params * len_jo, misc_params * m_pars, 
+                const int n_atoms, const float vol_norm)
 {
 
    // LJ Potential Parameters
@@ -19,17 +20,15 @@ void set_params(lj_params * len_jo, misc_params * m_pars, int n_atoms, float vol
 
    // Other parameters
    m_pars->dt = 2.0; // timestep
-   m_pars->dt2 = m_pars->dt * m_pars->dt;
-   m_pars->dt2h = 0.5 * m_pars->dt2;
    m_pars->float_N = (float)n_atoms;
-   m_pars->Vol = m_pars->float_N * vol_norm;
-   m_pars->side = powf(m_pars->Vol,1.0/3.0);
+   float Vol = m_pars->float_N * vol_norm; // box volume
+   m_pars->side = powf(Vol,1.0/3.0);
    m_pars->sideh = 0.5 * m_pars->side;
    m_pars->density = 1.0 / vol_norm;
    m_pars->pi = 2.0 * asin(1.0);
-   m_pars->MW = 16.042; // molecular weight (grams/mole)
+   float MW = 16.042; // molecular weight (grams/mole)
    m_pars->kb = 0.00001380660; // Bolztmann's Constant (aJ/molecule/K)
-   m_pars->xmass = m_pars->MW * 100.0 / 6.0220;
+   m_pars->xmass = MW * 100.0 / 6.0220;
    m_pars->xmassi = 1.0 / m_pars->xmass;
    len_jo->eps *= m_pars->kb;
 

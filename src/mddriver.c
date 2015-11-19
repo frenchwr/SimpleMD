@@ -18,9 +18,6 @@
 // timer[3]: thermo and trajectory print time
 double timer[4]; // global to improve readability of code
 
-// TODO: 
-//      (1) add better documentation in code
-
 //***************************************************************************
 // driver() function
 //   - Main body of program.

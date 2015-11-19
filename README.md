@@ -4,8 +4,8 @@
 be used for the course I teach in the spring.
 
 * This program borrows heavily from David Keffer's "The Working Person's 
-Guide to Molecular Dynamics Simulations", although I'm writing in a different
-language and plan to expand/replace certain parts of the program.
+Guide to Molecular Dynamics Simulations", although I have written the program in a different
+language and also expanded/replaced certain parts of the program.
 
 * The idea for the class is that students will start with this basic
 serial version of the code and then add parallel support with PThreads,
@@ -67,5 +67,29 @@ $ make clean
 will remove just the binary in **bin/**.
 
 ## Usage
+
+To run from the project root directory simply type:
+
+```
+bin/run_md
+```
+
+This will run the program with default parameters. To see a list of command-line options and a list of defaults, pass --help as a command-line argument:
+
+```
+$ bin/run_md --help
+Usage: ./run_md [-N <n_particles>] [-ts <n_timesteps>] [-xyz <xyz_file_output_frequency>] [-o <thermo_output_frequency>]
+Defaults:
+n_particles: 100
+n_timesteps: 10000
+xyz_file_output_fequency: 100
+thermo_output_frequency: 100
+```
+
+The project root directory also contains a Bash script for running a number of pre-determined simulations. To run with the default parameters simply type:
+
+```
+bash simulate.sh
+```
 
 ## Output

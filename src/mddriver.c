@@ -21,15 +21,15 @@ double timer[4]; // global to improve readability of code
 // TODO: 
 //      (1) add better documentation in code
 
-//**************************************************************************
+//***************************************************************************
 // driver() function
 //   - Main body of program.
 //   - Creates Atoms structure, allocates memory, initializes parameters,
 //     and runs simulation.
 //   - Arguments:
-//       - arg_count: number of arguments passed from command line
-//       - arg_list: array of strings containing arguments from command line
-//**************************************************************************
+//       - arg_count: number of arguments passed from command line.
+//       - arg_list: array of strings containing arguments from command line.
+//***************************************************************************
 void driver(const int arg_count, char ** arg_list)
 {
 
@@ -103,7 +103,7 @@ void driver(const int arg_count, char ** arg_list)
          print_xyz( fp_out, &atoms ); // prints to traj.xyz in current directory
 
       if ( istep % cl.thermo_freq == 0 || istep == cl.n_timesteps ) {
-         calc_props( &atoms, &mp, ulong, vlong, Temperature, props );
+         calc_props( &atoms, &mp, ulong, vlong, props );
          print_props( props, istep ); // prints thermo output to screen
       }
 
@@ -123,14 +123,14 @@ void driver(const int arg_count, char ** arg_list)
 
 }
 
-//**********************************************************************
+//***********************************************************************
 // main() function
 //   - Required in all C programs.
 //   - Execution of entire program begins here.
 //   - Arguments:
-//       - argc: number of arguments passed from command line
-//       - argv: array of strings containing arguments from command line
-//**********************************************************************
+//       - argc: number of arguments passed from command line.
+//       - argv: array of strings containing arguments from command line.
+//***********************************************************************
 int main(int argc, char ** argv)
 {
 

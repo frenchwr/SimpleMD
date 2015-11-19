@@ -3,6 +3,13 @@
 #include "integrator.h"
 #include "timer.h"
 
+//**********************************************************************
+// update_positions() function
+//   - Update particle positions by numerical integration.
+//   - Arguments:
+//       - myatoms: struct containing all atomic information.
+//       - m_pars: struct containing misc. parameters.
+//**********************************************************************
 void update_positions( Atoms * myatoms, const misc_params * m_pars )
 {
 
@@ -31,6 +38,13 @@ void update_positions( Atoms * myatoms, const misc_params * m_pars )
 
 }
 
+//**********************************************************************
+// update_velocities() function
+//   - Update velocities of atoms by numerical integration.
+//   - Arguments:
+//       - myatoms: struct containing all atomic information.
+//       - misc_params: struct containing misc. parameters.
+//**********************************************************************
 void update_velocities( Atoms * myatoms, const misc_params * m_pars )
 {
 
@@ -48,6 +62,14 @@ void update_velocities( Atoms * myatoms, const misc_params * m_pars )
 
 }
 
+//**********************************************************************
+// pbc() function
+//   - Impose periodic boundary conditions.
+//   - Arguments:
+//       - myatoms: struct containing all atomic information.
+//       - box_length: length of simulation cell.
+//       - half_box_length: half of length of simulation cell.
+//**********************************************************************
 void pbc( Atoms * myatoms, const float box_length, const float half_box_length )
 {
 

@@ -3,19 +3,30 @@
 #include <time.h>
 #include <stdlib.h>
 
+//**********************************************************************
+// initialize_positions() function
+//   - Initializes atomic positions on a simple lattice.
+//   - Arguments:
+//       - myatoms: struct containing all atomic information.
+//       - box_length: length of simulation cell.
+//       - half_box_length: half the length of the simulation cell.
+//**********************************************************************
 void initialize_positions(Atoms * myatoms, const float box_length, 
                           const float half_box_length)
 {
+
+   // determine number of atoms to place along each direction
    int n_atoms = myatoms->N;
    float float_N = (float)n_atoms;
-   float atoms1d_float = cbrtf( float_N ); // from <math.h>
-   int atoms1d_round = (int)atoms1d_float;
+   float atoms1d_float = cbrtf( float_N ); // N^(1/3), from <math.h>
+   int atoms1d_round = (int)atoms1d_float; // number of atoms along single direction
    float atoms1d_round_float = (float)atoms1d_round;
    if ( atoms1d_float - atoms1d_round_float > 1.0E-14 ) {
       atoms1d_round++;
       atoms1d_round_float = (float)atoms1d_round;
    }
 
+   // position atoms on simple 3d lattice
    int cur_atom_cnt = 0;
    float atom_offset = box_length / atoms1d_round_float;
    int ix,iy,iz;
@@ -31,8 +42,17 @@ void initialize_positions(Atoms * myatoms, const float box_length,
          }
       }
    }
+
 }
 
+//**************************************************************************
+// initialize_velocities() function
+//   - Scale velocities randomly, and scale to target temperature of system.
+//   - Arguments:
+//       - myatoms: struct containing all atomic information.
+//       - m_pars: struct containing misc. parameters.
+//       - temp: temperature of system.
+//**************************************************************************
 void initialize_velocities(Atoms * myatoms, const misc_params * m_pars, 
                            const float temp)
 {

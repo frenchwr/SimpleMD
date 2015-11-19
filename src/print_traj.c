@@ -3,6 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//**************************************************************************
+// print_xyz() function
+//   - Prints trajectory (atomic positions) to file.
+//   - Arguments:
+//       - handle: file handle for writing.
+//       - myatoms: struct containing all atom information.
+//**************************************************************************
 void print_xyz(FILE * handle, const Atoms * myatoms)
 {
    timeit(3,0);

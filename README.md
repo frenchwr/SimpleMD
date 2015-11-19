@@ -216,3 +216,8 @@ Force/energy time:                  7.910 secs (98.70%)
 Position/velocity update time:      0.086 secs ( 1.07%)
 Thermo/trajectory output time:      0.016 secs ( 0.20%)
 ```
+
+## Viewing Simulation
+
+Copy the traj.xyz file to your local machine and visualize the simulation with free 
+software like Visual Molecular Dynamic (http://www.ks.uiuc.edu/Research/vmd/). A few images are included in the images subdirectory of this project.

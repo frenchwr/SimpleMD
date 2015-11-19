@@ -22,6 +22,12 @@ OpenMP, MPI, CUDA, or whatever.
 
 ## Building Program
 
+To build simply type:
+
+```
+make
+```
+
 ## Usage
 
 ## Output

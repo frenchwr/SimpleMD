@@ -28,6 +28,44 @@ To build simply type:
 make
 ```
 
+If this is your first time to build the program you should see:
+
+```
+$ make
+gcc -Iinc -lm -Wall -c src/atoms.c -o obj/atoms.o
+gcc -Iinc -lm -Wall -c src/cl_parse.c -o obj/cl_parse.o
+gcc -Iinc -lm -Wall -c src/energy_force.c -o obj/energy_force.o
+gcc -Iinc -lm -Wall -c src/initialization.c -o obj/initialization.o
+gcc -Iinc -lm -Wall -c src/integrator.c -o obj/integrator.o
+gcc -Iinc -lm -Wall -c src/mddriver.c -o obj/mddriver.o
+gcc -Iinc -lm -Wall -c src/params.c -o obj/params.o
+gcc -Iinc -lm -Wall -c src/print_traj.c -o obj/print_traj.o
+gcc -Iinc -lm -Wall -c src/props.c -o obj/props.o
+gcc -Iinc -lm -Wall -c src/timer.c -o obj/timer.o
+gcc -lm  obj/atoms.o obj/cl_parse.o obj/energy_force.o obj/initialization.o obj/integrator.o obj/mddriver.o obj/params.o obj/print_traj.o obj/props.o obj/timer.o -o bin/run_md
+```
+
+If you have not edited any files since last running make, then you should see:
+
+```
+$ make
+make: `bin/run_md' is up to date.
+```
+
+Make automates the build process, so if you only edit a single source file, only that source file will be recompiled. If you want to blow away all the object files and the program binary, you can run:
+
+```
+$ make cleanall
+```
+
+while
+
+```
+$ make clean
+```
+
+will remove just the binary in **bin/**.
+
 ## Usage
 
 ## Output

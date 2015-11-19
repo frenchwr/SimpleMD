@@ -14,6 +14,7 @@ OpenMP, MPI, CUDA, or whatever.
 ## Project Layout
 
 - **bin/**: binary built to this directory.
+- **images/**: photo gallery of simulation snapshots.
 - **inc/**: contains header files with function prototypes, struct definitions, etc.
 - **obj/**: object files stored in this directory.
 - **src/**: source files.

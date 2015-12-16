@@ -221,4 +221,10 @@ Thermo/trajectory output time:      0.016 secs ( 0.20%)
 ## Viewing Simulation
 
 Copy the traj.xyz file to your local machine and visualize the simulation with free 
-software like Visual Molecular Dynamic (http://www.ks.uiuc.edu/Research/vmd/). A few images are included in the images subdirectory of this project.
+software like Visual Molecular Dynamic (http://www.ks.uiuc.edu/Research/vmd/). Here are a few example
+snapshots:
+
+<center>
+rc="https://github.com/frenchwr/SimpleMD/blob/master/images/125atoms.png" alt="1">
+rc="https://github.com/frenchwr/SimpleMD/blob/master/images/5000atoms.png" alt="1">
+</center>

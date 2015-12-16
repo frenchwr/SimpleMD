@@ -226,5 +226,7 @@ snapshots:
 
 <center>
 rc="https://github.com/frenchwr/SimpleMD/blob/master/images/125atoms.png" alt="1">
+</center>
+<center>
 rc="https://github.com/frenchwr/SimpleMD/blob/master/images/5000atoms.png" alt="1">
 </center>

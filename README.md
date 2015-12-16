@@ -224,5 +224,8 @@ Copy the traj.xyz file to your local machine and visualize the simulation with f
 software like Visual Molecular Dynamic (http://www.ks.uiuc.edu/Research/vmd/). Here are a few example
 snapshots:
 
+### 125 Atoms 
 ![125 atoms](/images/125atoms.png?raw=true "125 Atoms")
+
+### 5000 Atoms 
 ![5000 atoms](/images/5000atoms.png?raw=true "5000 Atoms")

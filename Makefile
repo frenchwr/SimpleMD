@@ -36,7 +36,7 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c $(INCLUDES)
 .PHONY: clean clean_all
 
 clean:
-	rm $(OBJECTS)
+	rm $(BINDIR)/$(TARGET) 
 
 cleanall:
 	rm $(BINDIR)/$(TARGET) 

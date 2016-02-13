@@ -6,7 +6,7 @@ BINDIR = bin
 
 # Compiler rules
 CC=gcc
-CFLAGS=-I$(INCDIR) -lm -Wall -O3
+CFLAGS=-I$(INCDIR) -Wall -Wextra -O3
 
 # Linker flags and libs
 LDFLAGS=-lm
@@ -30,14 +30,13 @@ $(BINDIR)/$(TARGET): $(OBJECTS)
 # the headers to change very often. It would be cleaner to build
 # a list of header files that each source file depends on, especially
 # since this will be a relatively small project.
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c $(INCLUDES)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: clean clean_all
 
 clean:
-	rm $(BINDIR)/$(TARGET) 
+	rm -f $(BINDIR)/$(TARGET)
 
-cleanall:
-	rm $(BINDIR)/$(TARGET) 
-	rm $(OBJECTS)
+cleanall: clean
+	rm -f $(OBJECTS)
